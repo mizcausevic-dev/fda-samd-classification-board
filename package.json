@@ -1,0 +1,35 @@
+{
+  "name": "fda-samd-classification-board",
+  "version": "0.1.0",
+  "description": "FDA SaMD classification + PCCP lifecycle record schema + reference verifier. Part of the Kinetic Gain Protocol Suite.",
+  "license": "MIT",
+  "author": "Miz Causevic",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "samd-record-verify": "./src/verify.mjs"
+  },
+  "scripts": {
+    "verify":         "node src/verify.mjs",
+    "build-examples": "node src/build-examples.mjs",
+    "verify-all":     "for f in examples/*.json; do node src/verify.mjs \"$f\" || exit 1; done"
+  },
+  "repository": {
+    "type": "git",
+    "url":  "https://github.com/mizcausevic-dev/fda-samd-classification-board"
+  },
+  "homepage": "https://suite.kineticgain.com",
+  "keywords": [
+    "ai-governance",
+    "ai-safety",
+    "healthtech",
+    "fda",
+    "samd",
+    "510k",
+    "de-novo",
+    "pccp",
+    "predetermined-change-control-plan",
+    "21-cfr-820",
+    "kinetic-gain-protocol-suite"
+  ]
+}

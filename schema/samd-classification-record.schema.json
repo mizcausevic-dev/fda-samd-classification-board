@@ -1,0 +1,240 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/mizcausevic-dev/fda-samd-classification-board/blob/main/schema/samd-classification-record.schema.json",
+  "title": "FDA SaMD Classification Record",
+  "description": "Hash-chained append-only record of an AI/ML medical device's FDA SaMD classification lifecycle — pre-submission posture, submission pathway, clearance/approval state, Predetermined Change Control Plan (PCCP) status, post-market modification triggers, and 21 CFR §820 QMS evidence references. Bridges FDA's regulatory pathway taxonomy to the Kinetic Gain Protocol Suite audit-stream spine so a buyer, an auditor, or the manufacturer's regulatory team reads one verifiable record across the device's full lifecycle.",
+  "type": "object",
+  "required": [
+    "record_version",
+    "record_id",
+    "issued_at",
+    "device",
+    "current_classification",
+    "regulatory_pathway",
+    "lifecycle_state",
+    "transitions",
+    "prev_hash",
+    "hash"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "record_version": {
+      "description": "Record schema version. MUST be '0.1' for documents conforming to this draft.",
+      "type": "string",
+      "const": "0.1"
+    },
+    "record_id": {
+      "description": "Stable record identifier. Convention: <vendor-slug>-<device-slug>-<record-uuid>.",
+      "type": "string",
+      "minLength": 1
+    },
+    "issued_at": {
+      "description": "When this record version was published.",
+      "type": "string",
+      "format": "date-time"
+    },
+    "device": {
+      "$ref": "#/$defs/Device"
+    },
+    "current_classification": {
+      "$ref": "#/$defs/Classification"
+    },
+    "regulatory_pathway": {
+      "$ref": "#/$defs/RegulatoryPathway"
+    },
+    "predetermined_change_control_plan": {
+      "$ref": "#/$defs/PCCP",
+      "description": "OPTIONAL. Required only if the device is under a PCCP per FDA's December 2024 final guidance."
+    },
+    "lifecycle_state": {
+      "description": "Current state in the SaMD lifecycle state machine. State transitions are appended to transitions[] below.",
+      "type": "string",
+      "enum": [
+        "pre-submission-design",
+        "q-sub-filed",
+        "submission-pending",
+        "submission-under-review",
+        "additional-information-requested",
+        "cleared-or-approved",
+        "marketed",
+        "pccp-change-pending",
+        "pccp-change-implemented",
+        "modification-requires-new-submission",
+        "post-market-corrective-action",
+        "withdrawn",
+        "superseded-by-new-version"
+      ]
+    },
+    "transitions": {
+      "description": "Append-only state-machine history. Each entry MUST cite the prior state and the trigger; the chain MUST be consistent.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/Transition" }
+    },
+    "qms_evidence_refs": {
+      "description": "References to 21 CFR §820 / ISO 13485 QMS evidence — design history file, risk management file (ISO 14971), software lifecycle (IEC 62304), usability (IEC 62366), and clinical evaluation. URLs MAY point at an evidence-bundle-spec bundle.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "design_history_file_url": { "type": "string", "format": "uri" },
+        "risk_management_file_url": { "type": "string", "format": "uri" },
+        "software_lifecycle_url": { "type": "string", "format": "uri" },
+        "usability_engineering_file_url": { "type": "string", "format": "uri" },
+        "clinical_evaluation_url": { "type": "string", "format": "uri" },
+        "evidence_bundle_url": { "type": "string", "format": "uri", "description": "Optional consolidated evidence-bundle-spec bundle covering all of the above" }
+      }
+    },
+    "linked_records": {
+      "description": "Cross-references to other Suite documents this record relates to.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "agent_card_url":                     { "type": "string", "format": "uri" },
+        "decision_card_urls":                 { "type": "array", "items": { "type": "string", "format": "uri" } },
+        "bias_coverage_bundle_url":           { "type": "string", "format": "uri" },
+        "medical_incident_card_urls":         { "type": "array", "items": { "type": "string", "format": "uri" } },
+        "fhir_resource_access_audit_url":     { "type": "string", "format": "uri" }
+      }
+    },
+    "publisher": {
+      "$ref": "#/$defs/Publisher"
+    },
+    "signature": {
+      "$ref": "#/$defs/Signature",
+      "description": "OPTIONAL but RECOMMENDED. ed25519 signature over the canonical-JSON body excluding the signature field itself."
+    },
+    "prev_hash": {
+      "description": "SHA-256 hash of the prior record version in the chain (64 hex chars). First record uses 64 zeros.",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "hash": {
+      "description": "Canonical-JSON SHA-256 of the record body EXCLUDING the hash field itself (64 hex chars).",
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  },
+  "$defs": {
+    "Device": {
+      "type": "object",
+      "required": ["product_name", "model_version", "vendor", "intended_use"],
+      "additionalProperties": false,
+      "properties": {
+        "product_name":          { "type": "string", "minLength": 1 },
+        "model_version":         { "type": "string", "minLength": 1, "description": "The specific software version covered by this record (semver or vendor-defined)." },
+        "vendor":                {
+          "type": "object",
+          "required": ["name"],
+          "properties": {
+            "name":             { "type": "string", "minLength": 1 },
+            "url":              { "type": "string", "format": "uri" },
+            "fda_establishment_registration_number": { "type": "string", "description": "FDA Form 2891 establishment registration number, if registered." },
+            "ce_marking_status": { "type": "string", "enum": ["none", "ce-marked", "ce-marking-in-progress"] }
+          }
+        },
+        "intended_use":          { "type": "string", "minLength": 1 },
+        "samd_definition_imdrf": {
+          "type": "string",
+          "enum": ["I", "II", "III", "IV"],
+          "description": "IMDRF SaMD Risk Category per the IMDRF SaMD Framework. I = low risk, IV = high risk."
+        },
+        "udi_di":                { "type": "string", "description": "Unique Device Identifier — Device Identifier portion, if assigned (per 21 CFR §830)." }
+      }
+    },
+    "Classification": {
+      "type": "object",
+      "required": ["fda_class", "regulation_number"],
+      "additionalProperties": false,
+      "properties": {
+        "fda_class":             { "type": "string", "enum": ["I", "II", "III"], "description": "FDA device class per 21 CFR §860." },
+        "regulation_number":     { "type": "string", "pattern": "^[0-9]{3}\\.[0-9]{4}$", "description": "21 CFR §8XX.XXXX regulation number, e.g. 892.2050." },
+        "product_code":          { "type": "string", "description": "FDA three-letter product code, e.g. QIH (radiological CAD)." },
+        "fda_510k_predicate":    { "type": "string", "description": "K-number of the predicate device cited, if any (510(k) only)." }
+      }
+    },
+    "RegulatoryPathway": {
+      "type": "object",
+      "required": ["pathway"],
+      "additionalProperties": false,
+      "properties": {
+        "pathway": {
+          "type": "string",
+          "enum": ["exempt", "510(k)", "de-novo", "pma", "hde", "510(k)-special", "510(k)-abbreviated", "biologic-bla"]
+        },
+        "k_number":              { "type": "string", "description": "FDA K-number once issued (510(k))." },
+        "den_number":            { "type": "string", "description": "FDA DEN-number once granted (De Novo)." },
+        "pma_number":            { "type": "string", "description": "FDA P-number once approved (PMA)." },
+        "submission_filed_at":   { "type": "string", "format": "date-time" },
+        "decision_at":           { "type": "string", "format": "date-time" },
+        "expected_decision_at":  { "type": "string", "format": "date-time" }
+      }
+    },
+    "PCCP": {
+      "type": "object",
+      "description": "Per FDA's 'Marketing Submission Recommendations for a Predetermined Change Control Plan' (Final, December 2024). PCCP scopes are limited to specific, planned modifications.",
+      "required": ["scope", "modifications_list", "validation_protocol_url"],
+      "additionalProperties": false,
+      "properties": {
+        "scope":                  { "type": "string", "minLength": 1, "description": "Narrative of what the PCCP covers (typically constrained to performance metric retraining or labeled-population expansion within named bounds)." },
+        "modifications_list":     {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": ["modification_id", "description", "trigger_kind", "boundary"],
+            "additionalProperties": false,
+            "properties": {
+              "modification_id":  { "type": "string", "minLength": 1 },
+              "description":      { "type": "string", "minLength": 1 },
+              "trigger_kind":     { "type": "string", "enum": ["scheduled-retraining", "performance-drift", "data-source-expansion", "labeled-population-expansion", "computational-efficiency-improvement"] },
+              "boundary":         { "type": "string", "minLength": 1, "description": "The bound of acceptable change — e.g. 'sensitivity may not drop more than 2 pp from validation baseline in any protected subgroup'." }
+            }
+          }
+        },
+        "validation_protocol_url": { "type": "string", "format": "uri", "description": "URL to the Modification Protocol detailing how each modification will be validated before deployment." },
+        "impact_assessment_url":   { "type": "string", "format": "uri", "description": "URL to the Impact Assessment showing why the modifications stay within the cleared device's safety + effectiveness profile." }
+      }
+    },
+    "Transition": {
+      "type": "object",
+      "required": ["from_state", "to_state", "transition_at", "trigger"],
+      "additionalProperties": false,
+      "properties": {
+        "from_state":      { "type": "string", "description": "Prior lifecycle_state value." },
+        "to_state":        { "type": "string", "description": "New lifecycle_state value (matches lifecycle_state field once applied)." },
+        "transition_at":   { "type": "string", "format": "date-time" },
+        "trigger":         {
+          "type": "object",
+          "required": ["kind", "description"],
+          "additionalProperties": false,
+          "properties": {
+            "kind":              { "type": "string", "enum": ["q-sub-submitted", "submission-filed", "review-question-received", "review-response-submitted", "fda-decision-issued", "pccp-modification-detected", "post-market-signal-detected", "substantial-change-detected", "withdrawal-decision", "version-superseded"] },
+            "description":       { "type": "string", "minLength": 1 },
+            "supporting_doc_url":{ "type": "string", "format": "uri" }
+          }
+        }
+      }
+    },
+    "Publisher": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name":            { "type": "string", "minLength": 1 },
+        "url":             { "type": "string", "format": "uri" },
+        "role":            { "type": "string", "enum": ["manufacturer", "spec-developer", "us-agent", "importer", "qms-administrator"] },
+        "contact":         { "type": "string" }
+      }
+    },
+    "Signature": {
+      "type": "object",
+      "required": ["algorithm", "signer_key_uri", "signature_b64"],
+      "additionalProperties": false,
+      "properties": {
+        "algorithm":       { "type": "string", "const": "ed25519" },
+        "signer_key_uri":  { "type": "string", "format": "uri", "description": "URI pointing at the JWK Set / public key. Convention: /.well-known/keys/samd-classification-signer.json#<kid>" },
+        "signature_b64":   { "type": "string", "description": "Base64-encoded ed25519 signature over the canonical-JSON record body excluding the signature field." }
+      }
+    }
+  }
+}

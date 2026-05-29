@@ -1,0 +1,124 @@
+{
+  "record_version": "0.1",
+  "record_id": "novexa-pathnarrate-v1-de-novo-1bf842c9",
+  "issued_at": "2026-09-30T16:00:00Z",
+  "device": {
+    "product_name": "Novexa PathNarrate",
+    "model_version": "1.0",
+    "vendor": {
+      "name": "Novexa Diagnostics, Inc.",
+      "url": "https://novexa.example",
+      "fda_establishment_registration_number": "3019988877",
+      "ce_marking_status": "none"
+    },
+    "intended_use": "Generative AI-assisted drafting of synoptic surgical-pathology reports for breast carcinoma resection specimens, with mandatory pathologist review-and-attestation before report release.",
+    "samd_definition_imdrf": "III",
+    "udi_di": "(01)10891234500011(11)260930"
+  },
+  "current_classification": {
+    "fda_class": "II",
+    "regulation_number": "864.3870",
+    "product_code": "QFG"
+  },
+  "regulatory_pathway": {
+    "pathway": "de-novo",
+    "den_number": "DEN230187",
+    "submission_filed_at": "2025-11-12T00:00:00Z",
+    "decision_at": "2026-09-15T00:00:00Z"
+  },
+  "lifecycle_state": "marketed",
+  "transitions": [
+    {
+      "from_state": "pre-submission-design",
+      "to_state": "q-sub-filed",
+      "transition_at": "2025-02-20T00:00:00Z",
+      "trigger": {
+        "kind": "q-sub-submitted",
+        "description": "Q-Sub Q250456 — confirms no suitable predicate; FDA agrees De Novo pathway. Discussion of human-in-the-loop attestation as the central control."
+      }
+    },
+    {
+      "from_state": "q-sub-filed",
+      "to_state": "submission-pending",
+      "transition_at": "2025-10-01T00:00:00Z",
+      "trigger": {
+        "kind": "review-response-submitted",
+        "description": "Q-Sub feedback addressed; De Novo submission package compiled with mandatory pathologist-attestation interlock evidence."
+      }
+    },
+    {
+      "from_state": "submission-pending",
+      "to_state": "submission-under-review",
+      "transition_at": "2025-11-12T00:00:00Z",
+      "trigger": {
+        "kind": "submission-filed",
+        "description": "De Novo request DEN230187 submitted. Includes clinical evaluation (n=812 cases, 7 academic medical centers), prompt-provenance attestations for all training prompts, AI Incident Card emission specification."
+      }
+    },
+    {
+      "from_state": "submission-under-review",
+      "to_state": "additional-information-requested",
+      "transition_at": "2026-02-04T00:00:00Z",
+      "trigger": {
+        "kind": "review-question-received",
+        "description": "FDA AI request (3 questions): generative-attribution audit trail at the report-section level, refusal behavior for ambiguous specimens (no-confidence cases), pathologist-override emission specification."
+      }
+    },
+    {
+      "from_state": "additional-information-requested",
+      "to_state": "submission-under-review",
+      "transition_at": "2026-04-18T00:00:00Z",
+      "trigger": {
+        "kind": "review-response-submitted",
+        "description": "AI response: (1) per-section attribution links each generated phrase to the underlying observation; (2) ambiguous-specimen behavior emits a refusal token rendered as 'Pathologist input required: <reason>'; (3) override emits an Incident Card with kind=ai_drafted_text_overridden."
+      }
+    },
+    {
+      "from_state": "submission-under-review",
+      "to_state": "cleared-or-approved",
+      "transition_at": "2026-09-15T00:00:00Z",
+      "trigger": {
+        "kind": "fda-decision-issued",
+        "description": "De Novo granted. New product code QFG created. Device subject to Special Controls: mandatory human-in-the-loop attestation interlock, per-section provenance, refusal-on-ambiguity behavior, post-market real-world performance reporting at 6 / 12 / 24 months.",
+        "supporting_doc_url": "https://www.accessdata.fda.gov/cdrh_docs/reviews/DEN230187.pdf"
+      }
+    },
+    {
+      "from_state": "cleared-or-approved",
+      "to_state": "marketed",
+      "transition_at": "2026-09-30T00:00:00Z",
+      "trigger": {
+        "kind": "fda-decision-issued",
+        "description": "Commercial availability. Subsequent same-vendor devices in this product code may pursue 510(k) under the new De Novo predicate."
+      }
+    }
+  ],
+  "qms_evidence_refs": {
+    "design_history_file_url": "https://novexa.example/.well-known/dhf/pathnarrate-v1.json",
+    "risk_management_file_url": "https://novexa.example/.well-known/risk/pathnarrate-v1-iso14971.json",
+    "software_lifecycle_url": "https://novexa.example/.well-known/iec62304/pathnarrate-v1.json",
+    "usability_engineering_file_url": "https://novexa.example/.well-known/iec62366/pathnarrate-v1.json",
+    "clinical_evaluation_url": "https://novexa.example/.well-known/cer/pathnarrate-v1-multicentre.json",
+    "evidence_bundle_url": "https://novexa.example/.well-known/bundles/pathnarrate-v1-de-novo.json"
+  },
+  "linked_records": {
+    "agent_card_url": "https://novexa.example/.well-known/agents/pathnarrate-v1.json",
+    "bias_coverage_bundle_url": "https://novexa.example/.well-known/bundles/pathnarrate-v1-bias-coverage.json",
+    "medical_incident_card_urls": [
+      "https://novexa.example/.well-known/incidents/INC-NX-2026-08-0019.json"
+    ]
+  },
+  "publisher": {
+    "name": "Novexa Diagnostics, Inc. — Regulatory Affairs",
+    "url": "https://novexa.example/regulatory",
+    "role": "manufacturer",
+    "contact": "regulatory@novexa.example"
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "signer_key_uri": "https://novexa.example/.well-known/keys/samd-classification-signer.json#k-2026q3",
+    "signature_b64": "ILLUSTRATIVE_PLACEHOLDER_SIGNATURE_FOR_SCHEMA_DOCUMENTATION"
+  },
+  "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "hash": "c54ea281b0601549d5e6a12bb93b8f47e2f25511644e6620fb8e526ab0126dba"
+}

@@ -1,0 +1,99 @@
+{
+  "record_version": "0.1",
+  "record_id": "vendorx-skinscan-v4-3-pccp-trigger-bd92f481",
+  "issued_at": "2026-11-08T14:00:00Z",
+  "device": {
+    "product_name": "VendorX SkinScan",
+    "model_version": "4.3-rc1",
+    "vendor": {
+      "name": "VendorX Health, Inc.",
+      "url": "https://vendorx.example",
+      "fda_establishment_registration_number": "3010987654",
+      "ce_marking_status": "ce-marked"
+    },
+    "intended_use": "Adjunctive lesion-triage decision support for melanoma in adult outpatient dermatology",
+    "samd_definition_imdrf": "II",
+    "udi_di": "(01)10884521100123(11)260315"
+  },
+  "current_classification": {
+    "fda_class": "II",
+    "regulation_number": "892.2050",
+    "product_code": "QIH",
+    "fda_510k_predicate": "K203456"
+  },
+  "regulatory_pathway": {
+    "pathway": "510(k)",
+    "k_number": "K231234"
+  },
+  "predetermined_change_control_plan": {
+    "scope": "Bounded retraining of the lesion-classification model on an expanded validation cohort to address the Fitzpatrick V + VI sensitivity gap identified at 2026-Q2 deployment. PCCP authorized in K231234 cleared January 2026; this modification falls within the cleared PCCP modification list.",
+    "modifications_list": [
+      {
+        "modification_id": "mod-fitzpatrick-v-vi-rebalance",
+        "description": "Retrain the lesion-classification head on a dataset rebalanced for Fitzpatrick V + VI (target: 12% of training set, up from 4.1%). All other model components, the device's labeled intended use, and the indication remain unchanged.",
+        "trigger_kind": "labeled-population-expansion",
+        "boundary": "Sensitivity in Fitzpatrick V + VI cohort MUST reach ≥ 0.88 (95% CI lower bound ≥ 0.82); sensitivity in Fitzpatrick I–IV cohort MUST NOT drop more than 2 pp from validation baseline; specificity in any Fitzpatrick subcohort MUST NOT drop more than 2 pp."
+      }
+    ],
+    "validation_protocol_url": "https://vendorx.example/.well-known/regulatory/skinscan-v4-3-pccp-validation-protocol.pdf",
+    "impact_assessment_url": "https://vendorx.example/.well-known/regulatory/skinscan-v4-3-pccp-impact-assessment.pdf"
+  },
+  "lifecycle_state": "pccp-change-pending",
+  "transitions": [
+    {
+      "from_state": "marketed",
+      "to_state": "post-market-corrective-action",
+      "transition_at": "2026-07-01T09:30:00Z",
+      "trigger": {
+        "kind": "post-market-signal-detected",
+        "description": "Regional Health published bias-coverage bundle showing 13 pp sensitivity gap in Fitzpatrick V + VI; vendor remediation commitment filed.",
+        "supporting_doc_url": "https://regional-health.example/.well-known/bundles/skinscan-v4-2-bias-coverage-2026-q2.json"
+      }
+    },
+    {
+      "from_state": "post-market-corrective-action",
+      "to_state": "pccp-change-pending",
+      "transition_at": "2026-08-15T00:00:00Z",
+      "trigger": {
+        "kind": "pccp-modification-detected",
+        "description": "Vendor invokes the cleared PCCP modification 'mod-fitzpatrick-v-vi-rebalance' to remediate the gap. PCCP scope and modification boundary documented; validation protocol filed."
+      }
+    },
+    {
+      "from_state": "pccp-change-pending",
+      "to_state": "pccp-change-pending",
+      "transition_at": "2026-11-08T14:00:00Z",
+      "trigger": {
+        "kind": "review-response-submitted",
+        "description": "Validation results filed with FDA per PCCP reporting obligations: Fitzpatrick V + VI cohort (n=487) sensitivity 0.89 (95% CI 0.85–0.93). Fitzpatrick I–IV cohort sensitivity 0.90 (no change from baseline). All boundary conditions met. Implementation timeline + post-market monitoring plan attached."
+      }
+    }
+  ],
+  "qms_evidence_refs": {
+    "design_history_file_url": "https://vendorx.example/.well-known/dhf/skinscan-v4-3-pccp-modification.json",
+    "risk_management_file_url": "https://vendorx.example/.well-known/risk/skinscan-v4-3-pccp-iso14971.json",
+    "software_lifecycle_url": "https://vendorx.example/.well-known/iec62304/skinscan-v4-3-pccp.json",
+    "clinical_evaluation_url": "https://vendorx.example/.well-known/cer/skinscan-v4-3-pccp-validation.json",
+    "evidence_bundle_url": "https://vendorx.example/.well-known/bundles/skinscan-v4-3-pccp-evidence.json"
+  },
+  "linked_records": {
+    "agent_card_url": "https://vendorx.example/.well-known/agents/skinscan-v4-3-rc1.json",
+    "decision_card_urls": [
+      "https://regional-health.example/.well-known/decisions/DEC-RH-DERM-2026-Q2-0001.json"
+    ],
+    "bias_coverage_bundle_url": "https://vendorx.example/.well-known/bundles/skinscan-v4-3-pccp-validation-bias-coverage.json"
+  },
+  "publisher": {
+    "name": "VendorX Health, Inc. — Regulatory Affairs",
+    "url": "https://vendorx.example/regulatory",
+    "role": "manufacturer",
+    "contact": "regulatory@vendorx.example"
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "signer_key_uri": "https://vendorx.example/.well-known/keys/samd-classification-signer.json#k-2026q4",
+    "signature_b64": "ILLUSTRATIVE_PLACEHOLDER_SIGNATURE_FOR_SCHEMA_DOCUMENTATION"
+  },
+  "prev_hash": "ce10ad07e2b6a8d3c4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7",
+  "hash": "66b89c659d827d841018dfa44cb03331c75691eb90233422486583f8395e944d"
+}

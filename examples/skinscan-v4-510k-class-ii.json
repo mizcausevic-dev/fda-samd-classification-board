@@ -1,0 +1,124 @@
+{
+  "record_version": "0.1",
+  "record_id": "vendorx-skinscan-v4-2-cef25a90",
+  "issued_at": "2026-03-20T15:00:00Z",
+  "device": {
+    "product_name": "VendorX SkinScan",
+    "model_version": "4.2",
+    "vendor": {
+      "name": "VendorX Health, Inc.",
+      "url": "https://vendorx.example",
+      "fda_establishment_registration_number": "3010987654",
+      "ce_marking_status": "ce-marked"
+    },
+    "intended_use": "Adjunctive lesion-triage decision support for melanoma in adult outpatient dermatology",
+    "samd_definition_imdrf": "II",
+    "udi_di": "(01)10884521100123(11)260315"
+  },
+  "current_classification": {
+    "fda_class": "II",
+    "regulation_number": "892.2050",
+    "product_code": "QIH",
+    "fda_510k_predicate": "K203456"
+  },
+  "regulatory_pathway": {
+    "pathway": "510(k)",
+    "k_number": "K231234",
+    "submission_filed_at": "2025-09-14T00:00:00Z",
+    "decision_at": "2026-01-22T00:00:00Z"
+  },
+  "lifecycle_state": "marketed",
+  "transitions": [
+    {
+      "from_state": "pre-submission-design",
+      "to_state": "q-sub-filed",
+      "transition_at": "2025-05-01T00:00:00Z",
+      "trigger": {
+        "kind": "q-sub-submitted",
+        "description": "Q-Sub Q251234 filed to confirm 510(k) pathway and clinical study design for the v4 architecture change.",
+        "supporting_doc_url": "https://vendorx.example/.well-known/regulatory/qsub-Q251234.json"
+      }
+    },
+    {
+      "from_state": "q-sub-filed",
+      "to_state": "submission-pending",
+      "transition_at": "2025-08-15T00:00:00Z",
+      "trigger": {
+        "kind": "review-response-submitted",
+        "description": "Q-Sub feedback addressed; final 510(k) submission package compiled."
+      }
+    },
+    {
+      "from_state": "submission-pending",
+      "to_state": "submission-under-review",
+      "transition_at": "2025-09-14T00:00:00Z",
+      "trigger": {
+        "kind": "submission-filed",
+        "description": "510(k) K231234 submitted to FDA CDRH."
+      }
+    },
+    {
+      "from_state": "submission-under-review",
+      "to_state": "additional-information-requested",
+      "transition_at": "2025-11-05T00:00:00Z",
+      "trigger": {
+        "kind": "review-question-received",
+        "description": "FDA Additional Information request (AI/ML interactive review) — clarification on training data ethnicity stratification + per-Fitzpatrick performance reporting."
+      }
+    },
+    {
+      "from_state": "additional-information-requested",
+      "to_state": "submission-under-review",
+      "transition_at": "2025-12-12T00:00:00Z",
+      "trigger": {
+        "kind": "review-response-submitted",
+        "description": "AI response submitted; included supplemental per-Fitzpatrick performance table and prospective data-collection commitment."
+      }
+    },
+    {
+      "from_state": "submission-under-review",
+      "to_state": "cleared-or-approved",
+      "transition_at": "2026-01-22T00:00:00Z",
+      "trigger": {
+        "kind": "fda-decision-issued",
+        "description": "Substantial equivalence determination issued. K231234 cleared.",
+        "supporting_doc_url": "https://www.accessdata.fda.gov/cdrh_docs/pdf25/K231234.pdf"
+      }
+    },
+    {
+      "from_state": "cleared-or-approved",
+      "to_state": "marketed",
+      "transition_at": "2026-03-20T00:00:00Z",
+      "trigger": {
+        "kind": "fda-decision-issued",
+        "description": "Commercial availability date; UDI assigned and product listed (FDA Form 2892)."
+      }
+    }
+  ],
+  "qms_evidence_refs": {
+    "design_history_file_url": "https://vendorx.example/.well-known/dhf/skinscan-v4-2.json",
+    "risk_management_file_url": "https://vendorx.example/.well-known/risk/skinscan-v4-2-iso14971.json",
+    "software_lifecycle_url": "https://vendorx.example/.well-known/iec62304/skinscan-v4-2.json",
+    "usability_engineering_file_url": "https://vendorx.example/.well-known/iec62366/skinscan-v4-2.json",
+    "clinical_evaluation_url": "https://vendorx.example/.well-known/cer/skinscan-v4-2.json",
+    "evidence_bundle_url": "https://vendorx.example/.well-known/bundles/skinscan-v4-2-design-history.json"
+  },
+  "linked_records": {
+    "agent_card_url": "https://vendorx.example/.well-known/agents/skinscan-v4-2.json",
+    "bias_coverage_bundle_url": "https://regional-health.example/.well-known/bundles/skinscan-v4-2-bias-coverage-2026-q2.json",
+    "fhir_resource_access_audit_url": "https://regional-health.example/.well-known/audit-stream/fhir-access/"
+  },
+  "publisher": {
+    "name": "VendorX Health, Inc. — Regulatory Affairs",
+    "url": "https://vendorx.example/regulatory",
+    "role": "manufacturer",
+    "contact": "regulatory@vendorx.example"
+  },
+  "signature": {
+    "algorithm": "ed25519",
+    "signer_key_uri": "https://vendorx.example/.well-known/keys/samd-classification-signer.json#k-2026q1",
+    "signature_b64": "ILLUSTRATIVE_PLACEHOLDER_SIGNATURE_FOR_SCHEMA_DOCUMENTATION"
+  },
+  "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+  "hash": "eb7392960df0335885d901ee56412f9ee2b57ea5f9b2b00cde31768ae8cc002d"
+}
